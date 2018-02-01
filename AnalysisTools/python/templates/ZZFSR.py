@@ -74,6 +74,18 @@ class ZZFSR(AnalysisFlowBase):
                 step.addModule('zeFSREmbedder', zeFSREmbedder, 'ee')
                 step.addModule('zmFSREmbedder', zmFSREmbedder, 'mm')
 
+                #2l2j
+                
+                zjFSREmbedder = cms.EDProducer(
+                    'PATJetCompositeUserCandPromoter',
+                    src = step.getObjTag('jj'),
+                    label = cms.string(self.getFSRLabel()),
+                    )
+
+                step.addModule('zjFSREmbedder', zjFSREmbedder, 'jj')
+
+                #2l2j
+
         return step
 
     def getFSRLabel(self):

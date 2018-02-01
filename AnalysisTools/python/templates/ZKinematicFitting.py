@@ -40,5 +40,18 @@ class ZKinematicFitting(AnalysisFlowBase):
                 )
             step.addModule('kinFit4m', kinFit4m, 'mmmm')
 
+            #2l2j
+
+            kinFit2m2j = cms.EDProducer(
+                "ZKinematicFitEmbedderMMJetJet",
+                src = step.getObjTag('mmjj'),
+                isMC = cms.bool(self.isMC),
+                fsrLabel = cms.string(self.getFSRLabel()),
+                leptonSelection = cms.string('userFloat("%sTight") > 0.5 && userFloat("%s") > 0.5'%(self.getZZIDLabel(), self.getZZIsoLabel())),
+                )
+            step.addModule('kinFit2m2j', kinFit2m2j, 'mmjj')
+
+            #2l2j
+
         return step
 

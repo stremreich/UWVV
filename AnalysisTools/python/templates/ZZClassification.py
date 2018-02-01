@@ -49,6 +49,35 @@ class ZZClassification(JetQuarkGluonTagging):
                     ),
                 )
             step.addModule('meEmbedding4m', meEmbedding4m, 'mmmm')
+
+            #2l2j
+            
+            meEmbedding2m2j = cms.EDProducer(
+                "ZZDiscriminantEmbedderMMJetJet",
+                src = step.getObjTag('mmjj'),
+                jetSrc = step.getObjTag('j'),
+                fsrLabel = cms.string(self.getFSRLabel()),
+                qgDiscriminator = cms.string(self.qgLikelihoodLabel()),
+                skimDecisionLabels = cms.vstring(
+                    '{}Tight'.format(self.getZZIDLabel()),
+                    self.getZZIsoLabel(),
+                    ),
+                )
+            step.addModule('meEmbedding2m2j', meEmbedding2m2j, 'mmjj')
+
+            categoryEmbedding2m2j = cms.EDProducer(
+                'ZZCategoryEmbedder',
+                src = step.getObjTag('mmjj'),
+                electronSrc = step.getObjTag('e'),
+                muonSrc = step.getObjTag('m'),
+                jetSrc = step.getObjTag('j'),
+                leptonSelection = cms.string('userFloat("{}Tight") > 0.5 && userFloat("{}") > 0.5'.format(self.getZZIDLabel(), self.getZZIsoLabel())),
+                bDiscriminator = cms.string('pfCombinedInclusiveSecondaryVertexV2BJetTags'),
+                bDiscriminatorCut = cms.double(0.800),
+                )
+            step.addModule('categoryEmbedding2m2j', categoryEmbedding2m2j, 'mmjj')
+
+            #2l2j
                 
             categoryEmbedding4e = cms.EDProducer(
                 'ZZCategoryEmbedder',

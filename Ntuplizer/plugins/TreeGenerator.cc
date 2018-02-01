@@ -63,7 +63,6 @@ class TreeGenerator : public edm::one::EDAnalyzer<edm::one::SharedResources>
   EventInfo evtInfo;
 
   std::unique_ptr<BranchManager<T> > branches;
-  std::unique_ptr<TriggerBranches> filterBranches;
   std::unique_ptr<TriggerBranches> triggerBranches;
 };
 
@@ -85,9 +84,6 @@ TreeGenerator<T>::TreeGenerator(const edm::ParameterSet& config) :
   const edm::ParameterSet& triggers = config.getParameter<edm::ParameterSet>("triggers");
   triggerBranches = std::unique_ptr<TriggerBranches>(new TriggerBranches(consumesCollector(),
                                                                          triggers, tree));
-  const edm::ParameterSet& filters = config.getParameter<edm::ParameterSet>("filters");
-  filterBranches = std::unique_ptr<TriggerBranches>(new TriggerBranches(consumesCollector(),
-                                                                         filters, tree));
 }
 
 
@@ -109,13 +105,11 @@ TreeGenerator<T>::analyze(const edm::Event &event,
 
   evtInfo.setEvent(event);
   triggerBranches->setEvent(event);
-  filterBranches->setEvent(event);
 
   for(size_t i = 0; i < cands->size(); ++i)
     {
       branches->fill(cands->ptrAt(i), evtInfo);
       triggerBranches->fill();
-      filterBranches->fill();
 
       tree->Fill();
     }
@@ -172,6 +166,24 @@ typedef TreeGenerator<CompositeDaughter<CompositeDaughter<DressedGenParticle, Dr
                                         >
                       > GenDressedTreeGeneratorWZ;
 
+//2l2j
+typedef TreeGenerator<CompositeDaughter<CompositeDaughter<pat::Electron, pat::Electron>,
+					CompositeDaughter<pat::Jet, pat::Jet> 
+					> 
+		      > TreeGeneratorEEJetJet;
+typedef TreeGenerator<CompositeDaughter<CompositeDaughter<pat::Muon, pat::Muon>,
+					CompositeDaughter<pat::Jet, pat::Jet> 
+					> 
+		      > TreeGeneratorMuMuJetJet;
+typedef TreeGenerator<CompositeDaughter<pat::Jet, pat::Jet> > TreeGeneratorJetJet;
+typedef TreeGenerator<CompositeDaughter<CompositeDaughter<pat::Electron, pat::Electron>,
+                                        pat::Jet
+                                        >
+                      > TreeGeneratorEEJet;
+typedef TreeGenerator<CompositeDaughter<CompositeDaughter<pat::Muon, pat::Muon>,
+                                        pat::Jet
+                                        >
+                      > TreeGeneratorMuMuJet;
 
 #include "FWCore/Framework/interface/MakerMacros.h"
 
@@ -191,3 +203,11 @@ DEFINE_FWK_MODULE(GenTreeGeneratorZZ);
 DEFINE_FWK_MODULE(GenDressedTreeGeneratorWZ);
 DEFINE_FWK_MODULE(GenDressedTreeGeneratorZZ);
 DEFINE_FWK_MODULE(GenTreeGeneratorWZ);
+
+// 2l2j
+
+DEFINE_FWK_MODULE(TreeGeneratorEEJetJet);
+DEFINE_FWK_MODULE(TreeGeneratorMuMuJetJet);
+DEFINE_FWK_MODULE(TreeGeneratorJetJet);
+DEFINE_FWK_MODULE(TreeGeneratorMuMuJet);
+DEFINE_FWK_MODULE(TreeGeneratorEEJet);

@@ -24,6 +24,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
+#include "DataFormats/PatCandidates/interface/Jet.h" //2l2j
 #include "DataFormats/PatCandidates/interface/CompositeCandidate.h"
 #include "DataFormats/Common/interface/ValueMap.h"
 #include "DataFormats/Common/interface/View.h"
@@ -119,7 +120,8 @@ void PATCompositeUserCandPromoter<T1,T2>::produce(edm::Event& iEvent,
 
 typedef PATCompositeUserCandPromoter<pat::Electron, pat::Electron> PATElectronCompositeUserCandPromoter;
 typedef PATCompositeUserCandPromoter<pat::Muon, pat::Muon> PATMuonCompositeUserCandPromoter;
+typedef PATCompositeUserCandPromoter<pat::Jet, pat::Jet> PATJetCompositeUserCandPromoter; //2l2j
 
 DEFINE_FWK_MODULE(PATElectronCompositeUserCandPromoter);
 DEFINE_FWK_MODULE(PATMuonCompositeUserCandPromoter);
-
+DEFINE_FWK_MODULE(PATJetCompositeUserCandPromoter); //2l2j

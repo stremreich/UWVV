@@ -29,6 +29,10 @@ class AnalysisStep(object):
         were run as-is. Basically, gives you the input tag for the next module
         that will use this collection.
         '''
+        #2l2j
+        print(obj)
+        print(self.outputs)
+        #2l2j
         return cms.InputTag(self.outputs[obj])
 
 

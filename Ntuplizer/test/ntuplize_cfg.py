@@ -207,9 +207,10 @@ FlowSteps = []
 # In addition, a condition is made available in the MET filters,
 # though in this case the event is rejected if a bad primary vertex is found,
 # rather than just filtering out the bad vertex and allowing another to be promoted.
-if not wz:
-    from UWVV.AnalysisTools.templates.VertexCleaning import VertexCleaning
-    FlowSteps.append(VertexCleaning)
+
+if not wz:                                                                   
+    from UWVV.AnalysisTools.templates.VertexCleaning import VertexCleaning   
+    FlowSteps.append(VertexCleaning)                                         
 
 # everybody needs basic lepton stuff
 from UWVV.AnalysisTools.templates.ElectronBaseFlow import ElectronBaseFlow
@@ -267,12 +268,13 @@ if options.isMC:
     elif options.lheWeights >= 3:
         from UWVV.Ntuplizer.templates.eventBranches import lheAllWeightBranches
         extraInitialStateBranches.append(lheAllWeightBranches)
-
+        
     from UWVV.Ntuplizer.templates.eventBranches import eventGenBranches
     extraInitialStateBranches.append(eventGenBranches)
     from UWVV.Ntuplizer.templates.leptonBranches import matchedGenLeptonBranches
     extraFinalObjectBranches['e'].append(matchedGenLeptonBranches)
     extraFinalObjectBranches['m'].append(matchedGenLeptonBranches)
+    
 
 if not wz:
     # FSR and ZZ/HZZ stuff
@@ -300,8 +302,8 @@ if zz:
         from UWVV.Ntuplizer.templates.zzDiscriminantBranches import zzDiscriminantBranches, kinFitBranches
         extraInitialStateBranches += [zzDiscriminantBranches, kinFitBranches]
 
-    from UWVV.AnalysisTools.templates.ZZSkim import ZZSkim
-    FlowSteps.append(ZZSkim)
+    #from UWVV.AnalysisTools.templates.ZZSkim import ZZSkim
+    #FlowSteps.append(ZZSkim)
 
 elif zl or z or wz:
     from UWVV.AnalysisTools.templates.ZPlusXBaseFlow import ZPlusXBaseFlow
@@ -325,6 +327,7 @@ elif l:
 if (zz or zl or z) and not wz:
     for f in FlowSteps:
         if f.__name__ in ['ZZFSR', 'ZZFlow']:
+            print "ZZFSR or ZZFlow"
             from UWVV.Ntuplizer.templates.fsrBranches import compositeObjectFSRBranches, leptonFSRBranches
             extraInitialStateBranches.append(compositeObjectFSRBranches)
             extraIntermediateStateBranches.append(compositeObjectFSRBranches)
@@ -333,6 +336,7 @@ if (zz or zl or z) and not wz:
             break
     for f in FlowSteps:
         if f.__name__ in ['ZZID', 'ZZIso', 'ZZFlow']:
+            print "ZZID or ZZIso or ZZFlow"
             from UWVV.AnalysisTools.templates.ZZLeptonCounters import ZZLeptonCounters
             FlowSteps.append(ZZLeptonCounters)
             from UWVV.Ntuplizer.templates.countBranches import zzCountBranches
@@ -353,6 +357,7 @@ if zz or wz:
         if zz:
             from UWVV.Ntuplizer.templates.vbsBranches import vbsDerivedSystematicBranches
             extraInitialStateBranches.append(vbsDerivedSystematicBranches)
+
 
 flowOpts = {
     'isMC' : bool(options.isMC),

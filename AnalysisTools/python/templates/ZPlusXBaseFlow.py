@@ -41,6 +41,19 @@ class ZPlusXBaseFlow(AnalysisFlowBase):
         step.addModule("zEECreation", zEEMod, 'ee')
         step.addModule("zMuMuCreation", zMuMuMod, 'mm')
 
+        #2l2j
+        
+        zJetJetMod = cms.EDProducer(
+            'PATCandViewShallowCloneCombiner',
+            decay = cms.string('{0}@+ {0}@-'.format(step.getObjTagString('j'))),
+            roles = cms.vstring('j1', 'j2'),
+            cut = cms.string(self.__class__.getZJetJetCuts()),
+            checkCharge = cms.bool(True),
+            setPdgId = cms.int32(23),
+            )
+
+        step.addModule("zJetJetCreation", zJetJetMod, 'jj')
+
 
     @classmethod
     def getZEECuts(cls):
@@ -56,6 +69,15 @@ class ZPlusXBaseFlow(AnalysisFlowBase):
                 'daughter("m2").pt > 5 && '
                 'abs(daughter("m1").eta) < 2.4 && '
                 'abs(daughter("m2").eta) < 2.4')
+
+    #2l2j
+    @classmethod
+    def getZJetJetCuts(cls):
+        return('')
+        #return ('daughter("j1").pt > 5 && '
+        #        'daughter("j2").pt > 5 && '
+        #        'abs(daughter("j1").eta) < 2.4 && '
+        #        'abs(daughter("j2").eta) < 2.4')
 
 
 class ZPlusXBaseFlowGen(ZPlusXBaseFlow):
@@ -73,3 +95,11 @@ class ZPlusXBaseFlowGen(ZPlusXBaseFlow):
                 'daughter("m2").pt > 5 && '
                 'abs(daughter("m1").eta) < 2.5 && '
                 'abs(daughter("m2").eta) < 2.5')
+
+    #2l2j
+    @classmethod
+    def getZJetJetCuts(cls):
+        return ('daughter("j1").pt > 5 && '
+                'daughter("j2").pt > 5 && '
+                'abs(daughter("j1").eta) < 2.4 && '
+                'abs(daughter("j2").eta) < 2.4')
