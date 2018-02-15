@@ -35,6 +35,17 @@ class ZZID(AnalysisFlowBase):
                 idLabel = cms.string(self.getZZIDLabel()),
                 )
 
+            #2l2j
+
+            jIDEmbedder = cms.EDProducer(
+                "PATJetIDEmbedder",
+                src = step.getObjTag('j'),
+                vtxSrc = step.getObjTag('v'),
+                ptCut = cms.double(5.),
+                idLabel = cms.string(self.getZZIDLabel()),
+                )
+
+            step.addModule("jIDEmbedder", jIDEmbedder, 'j') #2l2j
             step.addModule("eZZIDEmbedder", eIDEmbedder, 'e')
             step.addModule("mZZIDEmbedder", mIDEmbedder, 'm')
 
