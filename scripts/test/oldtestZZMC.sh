@@ -1,6 +1,6 @@
 #!/bin/bash
 cmsRun UWVV/Ntuplizer/test/ntuplize_cfg.py \
-    inputFiles=/store/mc/RunIIFall17MiniAOD/ZZTo4L_13TeV_powheg_pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v2/60000/FC8BCD89-E7D6-E711-BD5D-0242AC1C0501.root \
+    inputFiles=file:00AE1CAD-E1E0-E611-9C36-0025905A60B0.root \
     datasetName=ZZTo4L_13TeV_powheg_pythia8 \
     outputFile=testZZMC.root \
     channels=zz \
@@ -8,10 +8,5 @@ cmsRun UWVV/Ntuplizer/test/ntuplize_cfg.py \
     eCalib=1 \
     muCalib=1 \
     lheWeights=3 \
-    globalTag=94X_mc2017_realistic_v14 \
+    globalTag=80X_mcRun2_asymptotic_2016_TrancheIV_v7 \
     $1
-
-
-
-
-
